@@ -17,7 +17,7 @@ public class AdminService {
     private BCryptPasswordEncoder passwordEncoder;
 
     public Admin registerAdmin(Admin admin) {
-        admin.setPassword(passwordEncoder.encode(admin.getPassword()));  // パスワードを暗号化
+        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         return adminRepository.save(admin);
     }
 

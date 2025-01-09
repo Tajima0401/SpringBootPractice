@@ -12,15 +12,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.example.demo.entity.Admin;
 import com.example.demo.form.AdminSignupForm;
 import com.example.demo.repository.AdminRepository;
+import com.example.demo.repository.ContactRepository;
 
 @Controller
-public class AdminSignupController {
+public class AdminController {
 
     @Autowired
     private AdminRepository adminRepository;
 
     @Autowired
+    private ContactRepository contactRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @GetMapping("/admin/signin")
+    public String showLoginForm() {
+        return "signin";
+    }
 
     @GetMapping("/admin/signup")
     public String showSignupForm(Model model) {
@@ -40,7 +49,15 @@ public class AdminSignupController {
         admin.setEmail(adminSignupForm.getEmail());
         admin.setPassword(passwordEncoder.encode(adminSignupForm.getPassword()));
         adminRepository.save(admin);
-
+        
+        System.out.println("New admin registered with email: " + admin.getEmail());
+        
         return "redirect:/admin/signin";
+    }
+
+    @GetMapping("/admin/contacts")
+    public String showContactList(Model model) {
+        model.addAttribute("contacts", contactRepository.findAll());
+        return "contacts";
     }
 }
